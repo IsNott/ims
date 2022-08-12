@@ -23,18 +23,17 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class httpService {
 
-
-    public static void main(String[] args) throws InterruptedException {
-       new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
-           httpUtils.getFromUrl(url);
-       },"a").start();
-        TimeUnit.SECONDS.sleep(5);
-        new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
-            httpUtils.getFromUrl(url);
-        },"b").start();
-        TimeUnit.SECONDS.sleep(5);
-        new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
-            httpUtils.getFromUrl(url);
-        },"c").start();
-    }
+    //public static void main(String[] args) throws InterruptedException {
+    //   new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
+    //       httpUtils.getFromUrl(url);
+    //   },"a").start();
+    //    TimeUnit.SECONDS.sleep(5);
+    //    new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
+    //        httpUtils.getFromUrl(url);
+    //    },"b").start();
+    //    TimeUnit.SECONDS.sleep(5);
+    //    new Thread(()->{ String url = "https://movie.querydata.org/api?id=1302425";
+    //        httpUtils.getFromUrl(url);
+    //    },"c").start();
+    //}
 }

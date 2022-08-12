@@ -1,12 +1,15 @@
 spring:
   application:
     name: ims
+  elasticsearch:
+    rest:
+      uris: http://119.23.182.173:9200
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     password: 888888
     username: root
     driver-class-name: com.alibaba.druid.proxy.DruidDriver
-    url: localhost:3306/ims
+    url: jdbc:mysql://127.0.0.1:3306/ims?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
       # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     druid:
