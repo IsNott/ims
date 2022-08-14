@@ -8,8 +8,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     password: 888888
     username: root
-    driver-class-name: com.alibaba.druid.proxy.DruidDriver
-    url: jdbc:mysql://127.0.0.1:3306/ims?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ims?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
       # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     druid:
@@ -47,4 +47,8 @@ okhttp:
   connect-timeout: 5
   #读数据超时(单位为秒)
   read-timeout: 15
+es:
+  url: 119.23.182.173
+  port: 9200
+  scheme: http
 

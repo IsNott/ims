@@ -7,5 +7,9 @@ package com.nott.ims.common;
 
 
 public class Const {
-    public static final String QUERYURL = "https://api.wmdb.tv/";
+    public static final String QUERYURL = "https://api.wmdb.tv/movie/api";
+
+    public interface INDEXNAME {
+        public static final String MOVIE = "movie";
+    }
 }
