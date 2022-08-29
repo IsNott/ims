@@ -6,6 +6,7 @@ import com.nott.ims.es.service.EsService;
 import com.nott.ims.http.utils.HttpUtils;
 import com.nott.ims.movie.vo.MovieVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ import static com.nott.ims.common.Const.QUERYURL;
 
 @RestController
 @RequestMapping("/es")
+
 public class ESController {
     @Autowired
     private EsService esService;
@@ -34,11 +36,11 @@ public class ESController {
         return Result.okData(esService.delIndex("nott"));
     }
 
+    @Cacheable(value = "movie")
     @RequestMapping("/get")
     public Result getFromDB() {
         String fromUrl = HttpUtils.getFromUrl(QUERYURL + "?id=1302425");
         MovieVo movieVo = JSONObject.parseObject(fromUrl, MovieVo.class);
-
         return Result.okData(movieVo.toString());
     }
 

@@ -1,6 +1,8 @@
 package com.nott.ims.common;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
     private String code;
     private String msg;
     private Object obj;
