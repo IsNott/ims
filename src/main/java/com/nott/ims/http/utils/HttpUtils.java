@@ -8,6 +8,9 @@ import org.apache.http.HttpStatus;
 import sun.net.www.http.HttpClient;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Nott
@@ -17,12 +20,21 @@ import java.io.IOException;
 @Slf4j
 public class HttpUtils {
 
-    public static String getFromUrl(String url) {
+    public static String getFromUrl(String url, Map<String, String> fieldMap) {
         String responseStr = null;
         OkHttpClient httpClient = new OkHttpClient();
         try {
             log.info("request to {}", url);
-            Request request = new Request.Builder().get().url(url).build();
+            Set<String> set = fieldMap.keySet();
+            Iterator<String> iterator = set.iterator();
+            StringBuffer bf = new StringBuffer(url);
+            while (iterator.hasNext()) {
+                String next = iterator.next();
+                bf.append("?");
+                bf.append(next + "=");
+                bf.append(fieldMap.get(next));
+            }
+            Request request = new Request.Builder().get().url(bf.toString()).build();
             Response response = httpClient.newCall(request).execute();
             responseStr = response.body().string();
             log.info("get response, code:【{}】, from {},resp---->{}", String.valueOf(response.code()), url, responseStr);

@@ -25,7 +25,7 @@ public class Result implements Serializable {
         return result;
     }
 
-    public static Result okData(String msg) {
+    public static Result ok(String msg) {
         Result result = new Result();
         result.setCode("200");
         result.setMsg(msg);

@@ -60,10 +60,10 @@ public class MyRedisConfig {
         Jackson2JsonRedisSerializer<Object> objectJackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping();
+        //om.enableDefaultTyping();
         objectJackson2JsonRedisSerializer.setObjectMapper(om);
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         template.setKeySerializer(stringRedisSerializer);
         template.setHashKeySerializer(stringRedisSerializer);
         template.setValueSerializer(objectJackson2JsonRedisSerializer);

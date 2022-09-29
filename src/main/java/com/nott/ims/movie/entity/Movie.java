@@ -3,6 +3,7 @@ package com.nott.ims.movie.entity;
 import java.io.Serializable;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.nott.ims.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Movie implements Serializable {
+public class Movie extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @JSONField(name = "id")
