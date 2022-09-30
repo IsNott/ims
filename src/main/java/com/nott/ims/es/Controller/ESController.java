@@ -9,6 +9,7 @@ import com.nott.ims.http.utils.HttpUtils;
 import com.nott.ims.movie.entity.Movie;
 import com.nott.ims.movie.vo.MovieVo;
 import com.nott.ims.movie.vo.PersonVo;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,8 +32,10 @@ import static com.nott.ims.common.Const.QUERYURL;
 @RequestMapping("/es")
 
 public class ESController extends BaseController<Movie> {
-    @Autowired
+    @Resource
     private EsService esService;
+    @Resource
+    private RestHighLevelClient restHighLevelClient;
 
     @RequestMapping("/test")
     public Result EStest() {
@@ -47,7 +51,7 @@ public class ESController extends BaseController<Movie> {
 
     //@Cacheable(value = "movie")
     @RequestMapping("/get/{id}")
-    public Result getFromDB(@PathVariable String id) { //1302425
+    public Result getFromES(@PathVariable String id) { //1302425
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
         String fromUrl = HttpUtils.getFromUrl(QUERYURL, map);
@@ -55,8 +59,10 @@ public class ESController extends BaseController<Movie> {
         Movie movie = new Movie();
         BeanUtils.copyProperties(movieVo, movie);
         movie.setId(Long.parseLong(id));
-        super.save2Redis(movie);
-        super.save2Es(movie);
+        ThreadPoolUtils.executorService.execute(() -> {
+            super.save2Redis(movie);
+            super.save2Es(movie);
+        });
         return Result.okData(movie.toString());
     }
 

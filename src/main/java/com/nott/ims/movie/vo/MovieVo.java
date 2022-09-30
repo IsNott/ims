@@ -2,7 +2,9 @@ package com.nott.ims.movie.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.nott.ims.common.entity.BaseEntity;
 import com.nott.ims.movie.entity.ModvieInfo;
+import com.nott.ims.movie.entity.Movie;
 import com.nott.ims.movie.entity.Person;
 import lombok.Data;
 

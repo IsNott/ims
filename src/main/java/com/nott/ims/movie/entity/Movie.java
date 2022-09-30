@@ -1,11 +1,15 @@
 package com.nott.ims.movie.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.nott.ims.common.entity.BaseEntity;
+import com.nott.ims.movie.vo.ModvieInfoVo;
+import com.nott.ims.movie.vo.PersonVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * <p>
@@ -17,6 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class Movie extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +55,11 @@ public class Movie extends BaseEntity implements Serializable {
     private Long duration;
     @JSONField(name = "dateReleased")
     private String dateReleased;
+
+    private List<ModvieInfo> movieInfo;
+    private List<Person> actor;
+    private List<Person> writer;
+    private List<Person> director;
 
 
 }

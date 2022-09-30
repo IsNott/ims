@@ -41,6 +41,11 @@ public abstract class BaseController<T extends BaseEntity> {
     @Resource
     private RestHighLevelClient restHighLevelClient;
 
+    public void save(T obj) {
+        this.save2Es(obj);
+        this.save2Redis(obj);
+    }
+
     public T save2Redis(T obj) {
         // 保存到Redis
         Object o = redisTemplate.opsForValue().get(String.valueOf(obj.getId()));
@@ -52,18 +57,25 @@ public abstract class BaseController<T extends BaseEntity> {
 
     public void save2Es(T obj) {
         try {
-            boolean instanceOfMovie = obj.getClass().isInstance(Movie.class);
+            boolean instanceOfMovie = Movie.class == obj.getClass() || obj.getClass().isInstance(Movie.class);
             GetIndexRequest getIndexRequest = new GetIndexRequest(ES_PREFIX + MOVIE_INDEX);
             boolean exists = restHighLevelClient.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
             String index = instanceOfMovie ? ES_PREFIX + MOVIE_INDEX : "";
             // 索引存在
             if (exists) {
-                GetRequest getRequest = new GetRequest().index(index).id(String.valueOf(obj.getId()));
-                GetResponse docResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
-                if (docResponse.isExists()) {
-                    UpdateRequest updateRequest = new UpdateRequest().index(index).id(String.valueOf(obj.getId()));
-                    UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
-                    log.info("Es 更新结果: {}", updateResponse.getGetResult());
+                GetRequest getRequest = new GetRequest().index(index);
+                getRequest.id(String.valueOf(obj.getId()));
+                boolean docExists = restHighLevelClient.exists(getRequest, RequestOptions.DEFAULT);
+                if (docExists) {
+                    GetResponse docResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+                    Object object = JSONObject.parseObject(docResponse.getSourceAsString(), obj.getClass());
+                    if (!obj.equals(object)) {
+                        UpdateRequest updateRequest = new UpdateRequest().index(index);
+                        updateRequest.id(docResponse.getId());
+                        UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+                        log.info("Es 更新结果: {}", updateResponse.getGetResult());
+
+                    }
                 } else {
                     saveDocInEs(obj, index);
                 }
