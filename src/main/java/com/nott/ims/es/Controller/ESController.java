@@ -9,9 +9,11 @@ import com.nott.ims.http.utils.HttpUtils;
 import com.nott.ims.movie.entity.Movie;
 import com.nott.ims.movie.vo.MovieVo;
 import com.nott.ims.movie.vo.PersonVo;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +32,14 @@ import static com.nott.ims.common.Const.QUERYURL;
 
 @RestController
 @RequestMapping("/es")
-
+@Slf4j
 public class ESController extends BaseController<Movie> {
     @Resource
     private EsService esService;
     @Resource
     private RestHighLevelClient restHighLevelClient;
+    @Value("${user}")
+    private String user;
 
     @RequestMapping("/test")
     public Result EStest() {
@@ -64,6 +68,11 @@ public class ESController extends BaseController<Movie> {
             super.save2Es(movie);
         });
         return Result.okData(movie.toString());
+    }
+
+    @RequestMapping("/getNacos")
+    public Result testNacos(){
+        return Result.ok(user);
     }
 
 }
